@@ -1,0 +1,5 @@
+{
+    "DB_URL" : "mongodb://localhost:27017/codebud_db",
+    "APP_PORT" : "7070",
+    "SERVER_VERSION" : "1"
+}

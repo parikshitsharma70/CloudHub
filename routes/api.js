@@ -1,6 +1,8 @@
 const {check, validationResult} = require('express-validator')
 var hash = require('../utils/hash')
-var http = require('http')
+var https = require('https')
+var rp = require("request-promise-native")
+
 
 module.exports = function(app){
     app.post('/api/accountDetails', [
@@ -14,25 +16,30 @@ module.exports = function(app){
             }
             else{
                 var key = req.body.key
-                let url = `https://api.digitalocean.com/v2/account`
-                var options = {
-                    uri : url,
-                    method: 'GET',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization' : `Bearer ${key}`
-                    },
-                    json: true
-                  };
-
-                var getReq = http.request(options,function(response){
-                    response.on('data',function(data){
-                        console.log(data.toString('utf-8'));
-                        res.json({'message' : data.toString('utf-8')})
+                const _GET = path => {
+                    return rp({
+                        method: "GET",
+                        uri: `https://api.digitalocean.com/v2${path}`,
+                        headers: {
+                            Authorization: `Bearer ${key}`,
+                            "Content-Type": "application/json"
+                        },
+                        json: true
                     });
-                });
-          
-                getReq.end();
+                };
+                
+                const getAccount = () => _GET("/account");
+                
+                // Let's get our account
+                (async () => {
+                  try {
+                    const account = await getAccount();
+                    console.log(account);
+                    res.json({message : account})
+                  } catch (ex) {
+                    console.error(ex);
+                  }
+                })();
                 
             }
     })

@@ -4,7 +4,7 @@
   "description": "Seamless integration for devops across platforms",
   "main": "app.js",
   "scripts": {
-    "start" : "node app.js",
+    "start": "node app.js",
     "test": "node test.js"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "mongoose": "^5.9.1",
     "morgan-body": "^2.4.8",
     "nodemon": "^2.0.2",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.8"
   }
 }
